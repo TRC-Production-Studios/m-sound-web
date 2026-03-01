@@ -1,0 +1,557 @@
+{% extends "base.html" %}
+{% block title %}M Sound Solutions – Professional Audio Equipment{% endblock %}
+{% block meta_desc %}M Sound Solutions creates professional audio plugins for Roblox — subwoofers, line arrays, DSP processors and mixers for your venue or concert stage.{% endblock %}
+{% block og_url %}/{% endblock %}
+{% block canonical %}/{% endblock %}
+
+{% block extra_head %}
+<style>
+/* ══ HERO ════════════════════════════════════════════════ */
+.hero {
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden; text-align:center; padding:0 40px;
+}
+
+/* Animated background canvas layer */
+.hero-canvas {
+  position:absolute; inset:0; z-index:0;
+}
+.hero-canvas canvas { width:100%; height:100%; }
+
+/* Grid overlay */
+.hero-grid {
+  position:absolute; inset:0; z-index:1;
+  background-image:
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:65px 65px;
+  mask-image:radial-gradient(ellipse 90% 80% at 50% 50%,black 10%,transparent 80%);
+}
+
+/* Floating orbs */
+.orb {
+  position:absolute; border-radius:50%; filter:blur(90px);
+  animation:orbf 10s ease-in-out infinite;
+  pointer-events:none; z-index:0;
+}
+.o1 { width:600px;height:600px;background:rgba(33,150,243,.11);top:-150px;left:-150px;animation-delay:0s; }
+.o2 { width:450px;height:450px;background:rgba(0,198,255,.08);bottom:-100px;right:-100px;animation-delay:-5s; }
+.o3 { width:350px;height:350px;background:rgba(26,109,212,.09);top:35%;left:55%;animation-delay:-2.5s; }
+.o4 { width:250px;height:250px;background:rgba(0,150,255,.07);top:60%;left:10%;animation-delay:-7s; }
+@keyframes orbf {
+  0%,100%{ transform:translate(0,0) scale(1); }
+  25%{ transform:translate(40px,-30px) scale(1.06); }
+  50%{ transform:translate(-20px,40px) scale(.97); }
+  75%{ transform:translate(20px,20px) scale(1.03); }
+}
+
+/* Waveform animation in hero */
+.hero-wave {
+  position:absolute; bottom:0; left:0; right:0; z-index:1;
+  height:120px; overflow:hidden;
+}
+.hero-wave svg { width:100%; height:100%; }
+
+.hero-content { position:relative; z-index:3; max-width:880px; }
+
+.hero-badge {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:8px 22px; border-radius:100px; margin-bottom:34px;
+  font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; color:var(--a2);
+  animation:fadeu .8s .05s cubic-bezier(.16,1,.3,1) both;
+}
+.hero-badge .dot {
+  width:6px; height:6px; border-radius:50%; background:var(--a2);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(1.5)} }
+
+.hero h1 {
+  font-family:var(--font-h); font-weight:800;
+  font-size:clamp(2.8rem,8vw,6.5rem); line-height:1.0; letter-spacing:-.025em;
+  animation:fadeu .8s .12s cubic-bezier(.16,1,.3,1) both;
+}
+.hero h1 .g { background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+.hero-sub {
+  margin:26px auto; font-size:clamp(1rem,2vw,1.18rem); color:var(--muted);
+  max-width:580px; line-height:1.72;
+  animation:fadeu .8s .22s cubic-bezier(.16,1,.3,1) both;
+}
+
+.hero-btns {
+  display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+  animation:fadeu .8s .32s cubic-bezier(.16,1,.3,1) both;
+}
+
+.scroll-hint {
+  position:absolute; bottom:38px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:var(--muted); font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+  animation:fadeu 1s .7s both; z-index:3;
+}
+.scroll-hint .bar {
+  width:1px; height:44px;
+  background:linear-gradient(to bottom,transparent,var(--muted));
+  animation:scrollbar 2s infinite;
+}
+@keyframes scrollbar { 0%,100%{transform:scaleY(1);opacity:.55} 50%{transform:scaleY(1.35);opacity:1} }
+@keyframes fadeu { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
+
+/* ══ STATS ════════════════════════════════════════════════ */
+.stats-section { padding:0; }
+.stats-wrap {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:1px; background:var(--border);
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+}
+.stat {
+  background:var(--bg); padding:44px 28px; text-align:center;
+  position:relative; overflow:hidden;
+  transition:background .3s;
+}
+.stat:hover { background:rgba(33,150,243,.04); }
+.stat::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(33,150,243,.06) 0%,transparent 60%);
+  opacity:0; transition:opacity .35s;
+}
+.stat:hover::before { opacity:1; }
+.stat .num {
+  font-family:var(--font-h); font-weight:800; font-size:2.8rem;
+  background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  line-height:1; display:block;
+}
+.stat .lbl { color:var(--muted); font-size:.82rem; margin-top:8px; display:block; }
+
+/* ══ VIDEO ════════════════════════════════════════════════ */
+.video-section { padding:100px 0; }
+.section-hdr { text-align:center; margin-bottom:56px; }
+
+.video-wrap {
+  max-width:920px; margin:0 auto; position:relative;
+  border-radius:24px; overflow:hidden;
+  aspect-ratio:16/9;
+}
+.video-wrap iframe { width:100%; height:100%; border:none; display:block; }
+.video-ring {
+  position:absolute; inset:-1px; border-radius:25px; pointer-events:none;
+  border:1px solid var(--borderg);
+  box-shadow:0 0 0 1px rgba(33,150,243,.12),0 40px 80px rgba(0,0,0,.55),0 0 60px rgba(33,150,243,.12);
+}
+
+/* YouTube placeholder */
+#yt-placeholder { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+#yt-placeholder.hidden { display:none; }
+#yt-iframe { position:absolute; inset:0; width:100%; height:100%; border:none; display:none; }
+.yt-thumb {
+  position:absolute; inset:0;
+}
+.yt-thumb img { width:100%; height:100%; object-fit:cover; }
+.yt-overlay {
+  position:absolute; inset:0;
+  background:rgba(7,8,13,.82);
+  backdrop-filter:blur(2px);
+}
+.yt-blocked {
+  position:relative; z-index:2;
+  text-align:center; padding:32px 24px; max-width:460px;
+}
+.yt-blocked-icon {
+  width:60px; height:60px; border-radius:50%;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--borderg);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 18px; color:var(--muted);
+}
+.yt-blocked-title { font-family:var(--font-h); font-weight:700; font-size:1.15rem; margin-bottom:8px; }
+.yt-blocked-sub { color:var(--muted); font-size:.88rem; line-height:1.65; }
+#yt-placeholder.hidden { display:none; }
+#yt-iframe.visible { display:block !important; }
+
+/* ══ TEAM ════════════════════════════════════════════════ */
+.team-section { padding:100px 0; }
+.team-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.team-card {
+  border-radius:20px; padding:40px 30px; text-align:center;
+  transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s;
+}
+.team-card:hover {
+  transform:translateY(-10px);
+  box-shadow:0 32px 60px rgba(0,0,0,.4),0 0 0 1px rgba(33,150,243,.12);
+}
+.team-av {
+  width:76px; height:76px; border-radius:50%;
+  background:var(--grad);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-h); font-weight:800; font-size:1.4rem; color:#fff;
+  margin:0 auto 22px;
+  box-shadow:0 8px 28px rgba(33,150,243,.32);
+}
+.team-card h3 { font-family:var(--font-h); font-size:1.05rem; margin-bottom:4px; }
+.team-role { font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--a2); margin-bottom:14px; display:block; }
+.team-bio { color:var(--muted); font-size:.88rem; line-height:1.7; }
+
+/* ══ FAQ ════════════════════════════════════════════════ */
+.faq-section { padding:100px 0; }
+.faq-list { max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:8px; }
+.faq-item { border-radius:16px; overflow:hidden; transition:box-shadow .3s; }
+.faq-item:hover { box-shadow:0 4px 24px rgba(0,0,0,.2); }
+.faq-q {
+  width:100%; background:none; border:none; color:var(--text);
+  font-family:var(--font-h); font-size:.97rem; font-weight:600;
+  padding:22px 26px; text-align:left; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center; gap:14px;
+}
+.faq-icon {
+  width:26px; height:26px; border-radius:50%; border:1px solid var(--borderg);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; color:var(--a2); font-size:1.1rem;
+  transition:transform .32s, background .32s;
+}
+.faq-item.open .faq-icon { transform:rotate(45deg); background:rgba(33,150,243,.12); }
+.faq-body { overflow:hidden; max-height:0; transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .4s; padding:0 26px; }
+.faq-body.open { max-height:220px; padding-bottom:22px; }
+.faq-body p { color:var(--muted); line-height:1.75; }
+
+@media (max-width: 768px) {
+  .hero { padding:0 20px; min-height:100svh; }
+  .hero h1 { font-size:clamp(2.4rem,11vw,4rem); }
+  .hero-sub { font-size:.95rem; margin:18px auto; }
+  .hero-badge { font-size:.72rem; padding:7px 16px; margin-bottom:24px; }
+  .hero-btns { flex-direction:column; align-items:center; gap:10px; }
+  .hero-btns .btn { width:100%; max-width:280px; justify-content:center; }
+  .scroll-hint { display:none; }
+
+  .stats-wrap { grid-template-columns:repeat(2,1fr); }
+  .stat { padding:28px 16px; }
+  .stat .num { font-size:2.2rem; }
+
+  .video-section { padding:60px 0; }
+  .section-hdr { margin-bottom:32px; }
+  .section-title { font-size:1.6rem; }
+  .video-wrap { border-radius:14px; }
+
+  .team-section { padding:60px 0; }
+  .team-grid { grid-template-columns:1fr; gap:16px; }
+  .team-card { padding:28px 22px; }
+
+  .faq-section { padding:60px 0; }
+  .faq-q { padding:18px 20px; font-size:.92rem; }
+  .faq-body { padding:0 20px; }
+  .faq-body.open { padding-bottom:18px; }
+}
+@media (max-width: 480px) {
+  .stats-wrap { grid-template-columns:1fr 1fr; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ══ HERO ═══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-canvas" id="heroCanvas"></div>
+  <div class="hero-grid"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="orb o4"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge glass">
+      <span class="dot"></span>
+      Professional Audio Plugins for Roblox
+    </div>
+    <h1>Sound that <span class="g">moves</span><br>the world</h1>
+    <p class="hero-sub">
+      M Sound Solutions — Professional audio plugins built for Roblox.
+      Realistic speaker systems, mixers and processors for your Roblox venue or concert stage.
+    </p>
+    <div class="hero-btns">
+      <a href="{{ url_for('shop') }}" class="btn">Explore Shop →</a>
+      <a href="https://go.m-sound.dev/dc" class="btn btn-ghost">Joind Discord</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="bar"></div>
+  </div>
+</section>
+
+<!-- ══ STATS ══════════════════════════════════════════════ -->
+<section class="stats-section">
+  <div class="stats-wrap">
+    <div class="stat reveal"><span class="num">50+</span><span class="lbl">Happy Clients</span></div>
+    <div class="stat reveal reveal-delay-1"><span class="num">5+</span><span class="lbl">Years Experience</span></div>
+    <div class="stat reveal reveal-delay-2"><span class="num">2+</span><span class="lbl">Products</span></div>
+    <div class="stat reveal reveal-delay-3"><span class="num">24/7</span><span class="lbl">Technical Support</span></div>
+  </div>
+</section>
+
+<!-- ══ TRAILER VIDEO ══════════════════════════════════════ -->
+<section class="video-section">
+  <div class="container">
+    <div class="section-hdr reveal" style="text-align:center;">
+      <p class="section-eyebrow">Latest Product</p>
+      <h2 class="section-title">Experience the Sound</h2>
+      <p class="section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">Watch the official trailer for our newest product and let the sound speak for itself.</p>
+    </div>
+    <div class="reveal">
+      <div class="video-wrap glass" id="yt-container">
+
+        <!-- State A: cookies not yet accepted — placeholder -->
+        <div id="yt-placeholder">
+          <div class="yt-thumb">
+            <img src="https://img.youtube.com/vi/{{ youtube_id }}/maxresdefault.jpg"
+                 onerror="this.src='https://img.youtube.com/vi/{{ youtube_id }}/hqdefault.jpg'"
+                 alt="Video thumbnail" />
+            <div class="yt-overlay"></div>
+          </div>
+          <div class="yt-blocked">
+            <div class="yt-blocked-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <p class="yt-blocked-title">Video blocked</p>
+            <p class="yt-blocked-sub">To play this YouTube video, we need your cookie consent because Google/YouTube may set cookies during playback.</p>
+            <button class="btn" id="yt-accept-btn" style="margin-top:18px;">Accept cookies &amp; play video</button>
+            <a href="{{ url_for('datenschutz') }}" style="display:block;margin-top:12px;font-size:.8rem;color:var(--muted);text-decoration:underline;">Learn more in our Privacy Policy</a>
+          </div>
+        </div>
+
+        <!-- State B: cookies accepted — iframe loads here -->
+        <iframe id="yt-iframe"
+          src=""
+          data-src="https://www.youtube-nocookie.com/embed/{{ youtube_id }}?rel=0&modestbranding=1"
+          title="M Sound – Product Trailer"
+          allowfullscreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          style="display:none;width:100%;height:100%;border:none;">
+        </iframe>
+
+        <div class="video-ring"></div>
+      </div>
+
+      <!-- "Open cookie settings" button shown when declined -->
+      <div id="yt-reopen-wrap" style="display:none;text-align:center;margin-top:18px;">
+        <button class="btn btn-ghost" id="yt-reopen-btn" style="font-size:.82rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Manage cookie settings
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TEAM ════════════════════════════════════════════════ -->
+<section class="team-section">
+  <div class="container">
+    <div class="section-hdr reveal" style="text-align:center;margin-bottom:56px;">
+      <p class="section-eyebrow" style="justify-content:center;">Our Team</p>
+      <h2 class="section-title">The Minds Behind the Sound</h2>
+      <p class="section-subtitle" style="margin:14px auto 0;">Meet the people who make M Sound Solutions what it is.</p>
+    </div>
+    <div class="team-grid">
+      {% for m in team %}
+      <div class="team-card glass reveal reveal-delay-{{ loop.index }}">
+        <div class="team-av">{{ m.avatar }}</div>
+        <h3>{{ m.name }}</h3>
+        <span class="team-role">{{ m.role }}</span>
+        <p class="team-bio">{{ m.bio }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ════════════════════════════════════════════════ -->
+<section class="faq-section">
+  <div class="container">
+    <div class="section-hdr reveal" style="text-align:center;margin-bottom:52px;">
+      <p class="section-eyebrow" style="justify-content:center;">FAQ</p>
+      <h2 class="section-title">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+      {% for item in faq %}
+      <div class="faq-item glass reveal reveal-delay-{{ loop.index }}">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          {{ item.q }}
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-body">
+          <p>{{ item.a }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+/* FAQ accordion */
+function toggleFaq(btn){
+  var item = btn.closest('.faq-item');
+  var body = item.querySelector('.faq-body');
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){
+    i.classList.remove('open');
+    i.querySelector('.faq-body').classList.remove('open');
+  });
+  if(!wasOpen){ item.classList.add('open'); body.classList.add('open'); }
+}
+
+/* ── YouTube cookie-aware loader ──────────────────────── */
+function loadYouTube(){
+  var iframe = document.getElementById('yt-iframe');
+  var placeholder = document.getElementById('yt-placeholder');
+  var reopenWrap = document.getElementById('yt-reopen-wrap');
+  if(!iframe) return;
+
+  // Only load if not already loaded (check data-src still present)
+  var src = iframe.getAttribute('data-src');
+  if(src){
+    iframe.setAttribute('src', src);
+    iframe.removeAttribute('data-src');
+    iframe.style.display = 'block';
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+    iframe.style.position = 'absolute';
+    iframe.style.inset = '0';
+  }
+  if(placeholder) placeholder.style.display = 'none';
+  if(reopenWrap) reopenWrap.style.display = 'none';
+}
+
+function showReopenBtn(){
+  var wrap = document.getElementById('yt-reopen-wrap');
+  if(wrap) wrap.style.display = 'block';
+}
+
+/* Check on DOM ready since base.html script runs before our DOM */
+document.addEventListener('DOMContentLoaded', function(){
+  var consent = localStorage.getItem('ms_cookies_v1');
+  if(consent === 'accepted'){
+    loadYouTube();
+  } else if(consent === 'declined'){
+    showReopenBtn();
+  }
+});
+
+/* Also listen for runtime events (banner clicked on same page) */
+document.addEventListener('cookieAccepted', loadYouTube);
+document.addEventListener('cookieDeclined', showReopenBtn);
+
+/* "Accept cookies & play" button inside placeholder */
+var ytAcceptBtn = document.getElementById('yt-accept-btn');
+if(ytAcceptBtn){
+  ytAcceptBtn.addEventListener('click', function(){
+    localStorage.setItem('ms_cookies_v1','accepted');
+    window.MS_cookieAccepted = true;
+    /* fire any global callbacks */
+    if(window.MS_cookieCallbacks){
+      window.MS_cookieCallbacks.forEach(function(fn){ fn(); });
+      window.MS_cookieCallbacks = [];
+    }
+    /* hide global banner if still visible */
+    var cb = document.getElementById('cookie-banner');
+    if(cb){ cb.classList.remove('visible'); setTimeout(function(){ cb.style.display='none'; }, 500); }
+    loadYouTube();
+    document.dispatchEvent(new CustomEvent('cookieAccepted'));
+  });
+}
+
+/* "Manage cookie settings" reopen button */
+var ytReopenBtn = document.getElementById('yt-reopen-btn');
+if(ytReopenBtn){
+  ytReopenBtn.addEventListener('click', function(){
+    localStorage.removeItem('ms_cookies_v1');
+    var cb = document.getElementById('cookie-banner');
+    if(cb){ cb.style.display = ''; setTimeout(function(){ cb.classList.add('visible'); }, 10); }
+  });
+}
+
+/* Animated hero canvas – flowing audio waveform particles */
+(function(){
+  var canvas = document.createElement('canvas');
+  var ctx = canvas.getContext('2d');
+  document.getElementById('heroCanvas').appendChild(canvas);
+
+  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var particles = [];
+  for(var i=0;i<55;i++){
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 2 + .5,
+      vx: (Math.random()-.5) * .35,
+      vy: (Math.random()-.5) * .35,
+      a: Math.random(),
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * .008 + .003
+    });
+  }
+
+  var t = 0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    t += .008;
+
+    for(var i=0;i<particles.length;i++){
+      for(var j=i+1;j<particles.length;j++){
+        var dx = particles[i].x - particles[j].x;
+        var dy = particles[i].y - particles[j].y;
+        var dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist < 140){
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(33,150,243,'+((.08)*(1-dist/140))+')';
+          ctx.lineWidth = .8;
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach(function(p){
+      p.phase += p.speed;
+      p.x += p.vx + Math.sin(p.phase)*0.3;
+      p.y += p.vy + Math.cos(p.phase*1.3)*0.2;
+      if(p.x < -20) p.x = canvas.width+20;
+      if(p.x > canvas.width+20) p.x = -20;
+      if(p.y < -20) p.y = canvas.height+20;
+      if(p.y > canvas.height+20) p.y = -20;
+
+      var grd = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*3);
+      grd.addColorStop(0,'rgba(0,198,255,0.55)');
+      grd.addColorStop(1,'rgba(33,150,243,0)');
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+    });
+
+    var bw = canvas.width, bh = canvas.height;
+    var bars = 80, bwidth = bw/bars;
+    for(var b=0;b<bars;b++){
+      var h = (Math.sin(b*.18 + t*2)*0.5+0.5) * 45 + 5;
+      h *= (Math.sin(b*.07 + t)*0.3+0.7);
+      var alpha = .06 + (Math.sin(b*.18 + t*2)*0.5+0.5)*.06;
+      ctx.fillStyle = 'rgba(33,150,243,'+alpha+')';
+      ctx.fillRect(b*bwidth, bh - h - 40, bwidth*.6, h);
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+{% endblock %}

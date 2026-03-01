@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title %}{{ product.title }} – M Sound Solutions{% endblock %}
+{% block meta_desc %}{{ product.short_description }} – {{ product.description[:140] }}{% endblock %}
+{% block meta_keywords %}{{ product.title }}, {{ product.tags | join(', ') }}, M Sound, professional audio{% endblock %}
+{% block og_title %}{{ product.title }} – M Sound Solutions{% endblock %}
+{% block og_desc %}{{ product.short_description }} – Available from M Sound Solutions.{% endblock %}
+{% block og_url %}/shop/{{ product.id }}{% endblock %}
+{% block canonical %}/shop/{{ product.id }}{% endblock %}
+
+{% block extra_head %}
+<style>
+.detail-section { padding: 60px 0 100px; }
+
+.back-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--muted); font-size: .875rem;
+  margin-bottom: 40px;
+  transition: color .2s;
+}
+.back-link:hover { color: var(--text); }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Gallery */
+.gallery { display: flex; flex-direction: column; gap: 12px; }
+.gallery-main {
+  border-radius: 16px; overflow: hidden;
+  aspect-ratio: 4/3;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+}
+.gallery-main img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: opacity .3s;
+}
+.gallery-thumbs { display: flex; gap: 10px; }
+.gallery-thumb {
+  width: 80px; height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color .2s;
+  flex-shrink: 0;
+}
+.gallery-thumb.active { border-color: var(--accent2); }
+.gallery-thumb img { width:100%; height:100%; object-fit:cover; }
+
+/* Info */
+.detail-info { display: flex; flex-direction: column; gap: 28px; }
+
+.detail-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.detail-tag {
+  border: 1px solid rgba(33,150,243,.3);
+  color: var(--accent2);
+  background: rgba(33,150,243,.06);
+  font-size: .75rem; letter-spacing: .08em; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 100px;
+}
+
+.detail-title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+}
+
+.detail-short {
+  font-size: .95rem; color: var(--muted);
+  background: var(--bg3);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent1);
+}
+
+.detail-desc { color: var(--muted); line-height: 1.75; }
+
+.detail-price {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 2rem;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Specs table */
+.specs-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.specs-table-header {
+  background: var(--bg3);
+  padding: 14px 20px;
+  font-family: var(--font-head);
+  font-size: .75rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.spec-row {
+  display: flex;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: .9rem;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-key { color: var(--muted); width: 130px; flex-shrink: 0; }
+.spec-val { font-weight: 500; }
+
+.detail-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 768px) {
+  .detail-section { padding:40px 0 70px; }
+  .detail-grid { grid-template-columns:1fr; gap:28px; }
+  .gallery-thumb { width:64px; height:48px; }
+  .detail-title { font-size:clamp(1.6rem,6vw,2.4rem); }
+  .detail-actions { flex-direction:column; gap:10px; }
+  .detail-actions .btn { width:100%; justify-content:center; }
+  .back-link { margin-bottom:24px; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="detail-section">
+  <div class="container">
+    <a href="{{ url_for('shop') }}" class="back-link">← Back to Shop</a>
+
+    <div class="detail-grid">
+      <!-- Gallery -->
+      <div class="gallery reveal">
+        <div class="gallery-main">
+          <img id="mainImg" src="{{ product.images[0] }}" alt="{{ product.title }}" />
+        </div>
+        {% if product.images | length > 1 %}
+        <div class="gallery-thumbs">
+          {% for img in product.images %}
+          <div class="gallery-thumb {{ 'active' if loop.first }}" onclick="switchImg(this, '{{ img }}')">
+            <img src="{{ img }}" alt="{{ product.title }} {{ loop.index }}" />
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Info -->
+      <div class="detail-info reveal reveal-delay-1">
+        <div class="detail-tags">
+          {% for tag in product.tags %}
+          <span class="detail-tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+
+        <h1 class="detail-title">{{ product.title }}</h1>
+
+        <p class="detail-short">{{ product.short_description }}</p>
+
+        <p class="detail-desc">{{ product.description }}</p>
+
+        <p class="detail-price">{{ product.price }}</p>
+
+        <!-- Specs -->
+        {% if product.specs %}
+        <div class="specs-table">
+          <div class="specs-table-header">Technical Specifications</div>
+          {% for key, val in product.specs.items() %}
+          <div class="spec-row">
+            <span class="spec-key">{{ key }}</span>
+            <span class="spec-val">{{ val }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="detail-actions">
+          {% if product.buy_url %}
+          <a href="{{ product.buy_url }}" target="_blank" rel="noopener" class="btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+            Buy on Roblox
+          </a>
+          {% endif %}
+          <a href="mailto:info@m-sound.dev?subject=Inquiry: {{ product.title }}" class="btn btn-ghost">Contact Us</a>
+          <a href="{{ url_for('shop') }}" class="btn btn-ghost">← Back to Shop</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function switchImg(thumb, src) {
+  document.getElementById('mainImg').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('mainImg').src = src;
+    document.getElementById('mainImg').style.opacity = '1';
+  }, 150);
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+</script>
+{% endblock %}

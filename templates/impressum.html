@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Imprint – M Sound Solutions{% endblock %}
+{% block meta_desc %}Legal information and imprint for M Sound Solutions.{% endblock %}
+{% block og_title %}Imprint – M Sound Solutions{% endblock %}
+{% block og_url %}/impressum{% endblock %}
+{% block canonical %}/impressum{% endblock %}
+
+{% block extra_head %}
+<style>
+.legal-section { padding: 80px 0 120px; }
+.legal-header { margin-bottom: 52px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.legal-header h1 { font-family: var(--font-h); font-weight: 800; font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 8px; }
+.legal-header p { color: var(--muted); font-size: .88rem; }
+.legal-body { max-width: 680px; }
+.legal-body h2 { font-family: var(--font-h); font-size: 1rem; font-weight: 700; margin: 36px 0 10px; color: var(--text); }
+.legal-body p { color: var(--muted); line-height: 1.82; margin-bottom: 12px; font-size: .92rem; font-style: normal; }
+.legal-body a { color: var(--a2); text-decoration: underline; }
+.info-block {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin: 12px 0 24px;
+  color: var(--muted);
+  font-size: .92rem;
+  line-height: 1.9;
+}
+.info-block strong { color: var(--text); display: block; margin-bottom: 4px; font-family: var(--font-h); }
+
+@media (max-width: 768px) {
+  .legal-section { padding:48px 0 80px; }
+  .legal-header h1 { font-size:clamp(1.8rem,7vw,2.8rem); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="legal-section">
+  <div class="container">
+    <div class="legal-header reveal">
+      <p class="section-eyebrow" style="margin-bottom: 10px;">Legal</p>
+      <h1>Imprint</h1>
+      <p>Legal information about M Sound Solutions</p>
+    </div>
+
+    <div class="legal-body reveal">
+
+      <h2>Responsible for this website</h2>
+      <div class="info-block">
+        <strong>Tristan Grether</strong>
+        <strong>M Sound Solutions</strong>
+        Switzerland<br>
+        <a href="mailto:info@m-sound.dev">info@m-sound.dev</a>
+      </div>
+
+      <h2>Contact</h2>
+      <p>
+        For any questions — legal, product-related, or otherwise — you can reach us any time at
+        <a href="mailto:info@m-sound.dev">info@m-sound.dev</a>. We'll get back to you as soon as possible.
+      </p>
+
+      <h2>Liability</h2>
+      <p>
+        We do our best to keep the information on this site accurate and up to date. However, we cannot
+        guarantee completeness or correctness at all times, and we accept no liability for the content
+        of external linked pages.
+      </p>
+
+      <h2>Copyright</h2>
+      <p>
+        All content on this website — including text, images, and design — is the property of
+        M Sound Solutions unless stated otherwise. Reproduction without prior written consent is not permitted.
+      </p>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
