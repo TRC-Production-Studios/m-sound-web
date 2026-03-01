@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy – M Sound Solutions{% endblock %}
+{% block meta_desc %}Privacy Policy for M Sound Solutions covering all *.m-sound.dev domains. Based in Switzerland.{% endblock %}
+{% block og_title %}Privacy Policy – M Sound Solutions{% endblock %}
+{% block og_url %}/datenschutz{% endblock %}
+{% block canonical %}/datenschutz{% endblock %}
+
+{% block extra_head %}
+<style>
+.legal-section { padding: 80px 0 120px; }
+.legal-header { margin-bottom: 52px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+.legal-header h1 { font-family: var(--font-h); font-weight: 800; font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 8px; }
+.legal-header p { color: var(--muted); font-size: .88rem; }
+.legal-body { max-width: 680px; }
+.legal-body h2 { font-family: var(--font-h); font-size: 1rem; font-weight: 700; margin: 36px 0 10px; color: var(--text); }
+.legal-body p { color: var(--muted); line-height: 1.82; margin-bottom: 12px; font-size: .92rem; }
+.legal-body a { color: var(--a2); text-decoration: underline; }
+.legal-body ul { color: var(--muted); font-size: .92rem; line-height: 1.82; padding-left: 18px; margin-bottom: 12px; }
+.legal-body li { margin-bottom: 5px; }
+.manage-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--grad); color: #fff;
+  padding: 10px 22px; border-radius: 100px;
+  font-family: var(--font-h); font-weight: 700; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase;
+  border: none; cursor: pointer; margin-top: 6px;
+  transition: opacity .2s, transform .2s;
+}
+.manage-btn:hover { opacity: .85; transform: translateY(-1px); }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="legal-section">
+  <div class="container">
+    <div class="legal-header reveal">
+      <p class="section-eyebrow" style="margin-bottom: 10px;">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p>Last updated: February 2026 · Applies to *.m-sound.dev · Based in Switzerland</p>
+    </div>
+
+    <div class="legal-body reveal">
+
+      <h2>Who we are</h2>
+      <p>
+        M Sound Solutions is operated from Switzerland. If you have any questions about this policy or
+        how we handle your data, just reach out at
+        <a href="mailto:info@m-sound.dev">info@m-sound.dev</a> — we're happy to help.
+      </p>
+
+      <h2>What data we collect</h2>
+      <p>
+        We keep things minimal. When you visit this website, our hosting infrastructure (Cloudflare)
+        automatically logs basic technical data — your IP address, the page you requested, your browser type,
+        and the time of access. This is standard for any website and is used solely to keep things running
+        smoothly and securely. We do not run any analytics, advertising trackers, or user profiling.
+      </p>
+
+      <h2>DNS via Cloudflare</h2>
+      <p>
+        This site is delivered via Cloudflare's global network. Cloudflare may process visitor data
+        (including IP addresses) to protect against attacks and ensure reliability. They act as our
+        data processor under a Data Processing Agreement. We are hosting this website on our own servers. 
+        We dont collect any informations who visites our site.
+      </p>
+
+      <h2>YouTube videos</h2>
+      <p>
+        Our homepage includes an embedded YouTube video. To protect your privacy, the video only loads
+        after you give your consent via our cookie banner. We use YouTube's privacy-enhanced mode
+        (<code style="background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:.85em;">youtube-nocookie.com</code>),
+        which means no cookies are set until you actually play the video. Once you do, Google/YouTube
+        may collect data according to their own policy:
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>
+      </p>
+      <p>You can update your cookie preference at any time:</p>
+      <button class="manage-btn" onclick="openCookieSettings()">⚙ Manage Cookie Settings</button>
+
+      <h2>When you contact us</h2>
+      <p>
+        If you send us an email, we'll store your name, email address, and message to be able to respond.
+        We won't share this with anyone. Once the matter is resolved and no legal retention period applies,
+        we delete the data.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If we update this policy, the date at the top changes. Nothing dramatic — we'll keep it simple.
+      </p>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function openCookieSettings(){
+  localStorage.removeItem('ms_cookies_v1');
+  window.MS_cookieAccepted = false;
+  var cb = document.getElementById('cookie-banner');
+  if(cb){ cb.style.display = ''; setTimeout(function(){ cb.classList.add('visible'); }, 10); }
+}
+</script>
+{% endblock %}

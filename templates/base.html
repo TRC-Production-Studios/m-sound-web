@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}M Sound Solutions – Professional Audio Plugins for Roblox{% endblock %}</title>
+  <meta name="description" content="{% block meta_desc %}M Sound Solutions creates professional audio plugins for Roblox — realistic subwoofers, line arrays, DSP processors and mixing consoles for your Roblox venue or concert stage.{% endblock %}" />
+  <meta name="keywords" content="{% block meta_keywords %}M Sound, M Sound Solutions, Roblox audio plugin, Roblox speaker, Roblox sound system, Roblox subwoofer, Roblox line array, Roblox DSP, Roblox mixer, Roblox concert, professional audio Roblox{% endblock %}" />
+  <meta name="author" content="M Sound Solutions" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{% block og_title %}M Sound Solutions – Professional Audio Equipment{% endblock %}" />
+  <meta property="og:description" content="{% block og_desc %}Professional audio plugins for Roblox — realistic speaker systems, mixers and processors for your concert stage.{% endblock %}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://m-sound.dev{% block og_url %}/{% endblock %}" />
+  <meta property="og:image" content="https://m-sound.dev/static/images/logo_nobg.png" />
+  <meta property="og:site_name" content="M Sound Solutions" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{% block tw_title %}M Sound Solutions – Professional Audio{% endblock %}" />
+  <meta name="twitter:description" content="{% block tw_desc %}High-end audio equipment for live events, installations and studios.{% endblock %}" />
+  <meta name="twitter:image" content="https://m-sound.dev/static/images/logo_nobg.png" />
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo_nobg.png') }}" />
+  <link rel="canonical" href="https://m-sound.dev{% block canonical %}/{% endblock %}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #07080d;
+      --bg3:       #131629;
+      --border:    rgba(255,255,255,.07);
+      --borderg:   rgba(255,255,255,.13);
+      --text:      #e8eaf0;
+      --muted:     #6b7280;
+      --a1:        #2196f3;
+      --a2:        #00c6ff;
+      --grad:      linear-gradient(135deg,#1a6dd4 0%,#00c6ff 100%);
+      --gbg:       rgba(10,12,22,.58);
+      --font-h:    'Syne',sans-serif;
+      --font-b:    'DM Sans',sans-serif;
+      --r:         16px;
+      --nav-h:     72px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background:var(--bg); color:var(--text); font-family:var(--font-b); font-size:16px; line-height:1.65; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--a1); border-radius:3px; }
+
+    /* grain */
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity:.028; pointer-events:none; z-index:9998;
+    }
+
+    /* ═══ WELCOME SCREEN ════════════════════════════════════ */
+    #ws {
+      position:fixed; inset:0; z-index:99999;
+      display:flex; align-items:center; justify-content:center; flex-direction:column; gap:18px;
+      background:var(--bg);
+      overflow:hidden;
+    }
+    #ws::before {
+      content:''; position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 65% 55% at 35% 55%,rgba(33,150,243,.24) 0%,transparent 65%),
+        radial-gradient(ellipse 55% 45% at 72% 38%,rgba(0,198,255,.16) 0%,transparent 60%),
+        radial-gradient(ellipse 40% 40% at 60% 80%,rgba(26,109,212,.12) 0%,transparent 55%);
+      animation:wglow 4s ease-in-out infinite alternate;
+    }
+    @keyframes wglow {
+      from { transform:scale(1) rotate(-1deg); opacity:.8; }
+      to   { transform:scale(1.06) rotate(1deg); opacity:1; }
+    }
+    #ws .wlogo {
+      position:relative; z-index:2; width:68px; height:68px; object-fit:contain;
+      filter:drop-shadow(0 0 20px rgba(0,198,255,.6));
+      opacity:0; transform:scale(.75) translateY(10px);
+      animation:wfadein .7s .15s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    #ws .wtitle {
+      position:relative; z-index:2;
+      font-family:var(--font-h); font-weight:800;
+      font-size:clamp(2.8rem,8vw,5.5rem); letter-spacing:-.025em;
+      background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      opacity:0; transform:translateY(22px);
+      animation:wfadein .7s .38s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    #ws .wsub {
+      position:relative; z-index:2;
+      font-size:.82rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+      opacity:0; transform:translateY(10px);
+      animation:wfadein .6s .62s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes wfadein { to { opacity:1; transform:none; } }
+
+    /* glass shimmer overlay on welcome */
+    #ws .wglass {
+      position:absolute; inset:0; z-index:4; pointer-events:none;
+      opacity:0; transition:opacity .6s;
+      background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(0,198,255,.08),transparent);
+      backdrop-filter:blur(0px);
+    }
+    #ws.glassing .wglass { opacity:1; backdrop-filter:blur(30px); }
+    #ws.fading {
+      animation:wfadeout .85s cubic-bezier(.4,0,.6,1) forwards;
+    }
+    @keyframes wfadeout {
+      0%   { opacity:1; }
+      100% { opacity:0; }
+    }
+    #ws.gone { display:none; }
+
+    /* ═══ DYNAMIC ISLAND NAV ════════════════════════════════ */
+    #nav-outer {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      display:flex; justify-content:center; pointer-events:none;
+      padding-top:0;
+      transition:padding-top .52s cubic-bezier(.34,1.56,.64,1);
+    }
+    #nav-outer.island { padding-top:14px; }
+
+    nav {
+      pointer-events:all;
+      width:100%; max-width:100%;
+      height:var(--nav-h);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px;
+      border-radius:0;
+      border:1px solid transparent;
+      background:transparent;
+      transition:
+        width         .55s cubic-bezier(.34,1.56,.64,1),
+        max-width     .55s cubic-bezier(.34,1.56,.64,1),
+        border-radius .55s cubic-bezier(.34,1.56,.64,1),
+        height        .45s cubic-bezier(.34,1.56,.64,1),
+        padding       .4s,
+        background    .4s,
+        border-color  .4s,
+        box-shadow    .4s;
+    }
+    nav.island {
+      width:calc(100% - 40px); max-width:1160px;
+      height:56px; padding:0 26px;
+      border-radius:50px;
+      background:var(--gbg);
+      backdrop-filter:blur(28px) saturate(1.8);
+      -webkit-backdrop-filter:blur(28px) saturate(1.8);
+      border-color:var(--borderg);
+      box-shadow:
+        0 8px 32px rgba(0,0,0,.5),
+        0 2px 6px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.1),
+        inset 0 -1px 0 rgba(0,0,0,.2);
+    }
+
+    .nav-logo { display:flex; align-items:center; gap:10px; }
+    .nav-logo img {
+      height:30px; width:30px; object-fit:contain;
+      filter:drop-shadow(0 0 6px rgba(0,198,255,.35));
+      transition:filter .3s;
+    }
+    .nav-logo:hover img { filter:drop-shadow(0 0 14px rgba(0,198,255,.7)); }
+    .nav-logo span {
+      font-family:var(--font-h); font-weight:800; font-size:1rem; letter-spacing:.05em;
+      background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+
+    .nav-links { display:flex; gap:24px; list-style:none; align-items:center; }
+    .nav-links a {
+      font-size:.8rem; font-weight:500; letter-spacing:.07em; text-transform:uppercase;
+      color:var(--muted); transition:color .25s; position:relative;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; left:0; bottom:-3px; width:0; height:1.5px;
+      background:var(--grad); border-radius:2px; transition:width .3s;
+    }
+    .nav-links a:hover,.nav-links a.active { color:var(--text); }
+    .nav-links a:hover::after,.nav-links a.active::after { width:100%; }
+    .nav-cta {
+      background:var(--grad) !important; color:#fff !important;
+      padding:8px 20px !important; border-radius:100px !important;
+      font-size:.78rem !important; font-weight:700 !important; letter-spacing:.07em !important;
+      box-shadow:0 4px 14px rgba(33,150,243,.28);
+      transition:opacity .25s,transform .25s,box-shadow .25s !important;
+    }
+    .nav-cta:hover { opacity:.9 !important; transform:translateY(-1px) !important; box-shadow:0 8px 22px rgba(33,150,243,.45) !important; }
+    .nav-cta::after { display:none !important; }
+
+    /* ═══ GLASS CARD ════════════════════════════════════════ */
+    .glass {
+      background:linear-gradient(135deg,rgba(255,255,255,.065) 0%,rgba(255,255,255,.02) 50%,rgba(0,198,255,.025) 100%);
+      backdrop-filter:blur(22px) saturate(1.6);
+      -webkit-backdrop-filter:blur(22px) saturate(1.6);
+      border:1px solid var(--borderg);
+      box-shadow:0 8px 32px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.09),inset 0 -1px 0 rgba(0,0,0,.15);
+      position:relative; overflow:hidden;
+    }
+    .glass::after {
+      content:''; position:absolute; top:0; left:-60%; width:35%; height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.05),transparent);
+      transform:skewX(-18deg); pointer-events:none;
+    }
+
+    /* ═══ FOOTER ════════════════════════════════════════════ */
+    footer { border-top:1px solid var(--border); padding:60px 40px 40px; margin-top:100px; }
+    .footer-inner {
+      max-width:1200px; margin:0 auto;
+      display:grid; grid-template-columns:2fr 1fr 1fr; gap:60px;
+    }
+    .footer-brand { display:flex; flex-direction:column; gap:16px; }
+    .footer-brand img { height:42px; width:42px; object-fit:contain; filter:drop-shadow(0 0 8px rgba(0,198,255,.28)); }
+    .footer-brand p { color:var(--muted); font-size:.88rem; max-width:280px; line-height:1.75; }
+    .footer-col h4 { font-family:var(--font-h); font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+    .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+    .footer-col a { color:var(--muted); font-size:.88rem; transition:color .2s; display:flex; align-items:center; gap:10px; }
+    .footer-col a:hover { color:var(--text); }
+    .footer-bottom {
+      max-width:1200px; margin:36px auto 0; padding-top:22px; border-top:1px solid var(--border);
+      display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:.78rem;
+    }
+
+    main { padding-top:var(--nav-h); min-height:80vh; }
+    .container { max-width:1200px; margin:0 auto; padding:0 40px; }
+
+    .btn {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--grad); color:#fff;
+      padding:14px 32px; border-radius:100px;
+      font-family:var(--font-h); font-weight:700; font-size:.875rem; letter-spacing:.06em; text-transform:uppercase;
+      border:none; cursor:pointer;
+      transition:transform .25s,box-shadow .25s,opacity .25s;
+      box-shadow:0 4px 20px rgba(33,150,243,.22);
+    }
+    .btn:hover { transform:translateY(-2px); box-shadow:0 14px 36px rgba(33,150,243,.42); }
+    .btn-ghost {
+      background:rgba(10,12,22,.5);
+      backdrop-filter:blur(16px);
+      border:1px solid var(--borderg);
+      color:var(--text);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    .btn-ghost:hover { border-color:rgba(0,198,255,.4); box-shadow:0 8px 22px rgba(0,198,255,.1),inset 0 1px 0 rgba(255,255,255,.1); }
+
+    .section-eyebrow {
+      font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--a2); margin-bottom:12px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .section-eyebrow::before { content:''; display:inline-block; width:18px; height:1.5px; background:var(--a2); border-radius:2px; }
+    .section-title { font-family:var(--font-h); font-weight:800; font-size:clamp(1.8rem,4vw,3rem); line-height:1.1; }
+    .section-subtitle { color:var(--muted); margin-top:14px; max-width:560px; }
+
+    .reveal { opacity:0; transform:translateY(34px); transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1); }
+    .reveal.visible { opacity:1; transform:none; }
+    .reveal-delay-1 { transition-delay:.1s; }
+    .reveal-delay-2 { transition-delay:.2s; }
+    .reveal-delay-3 { transition-delay:.3s; }
+    .reveal-delay-4 { transition-delay:.4s; }
+
+    /* ═══ COOKIE BANNER ══════════════════════════════════════ */
+    #cookie-banner {
+      position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+      z-index:88888;
+      width:calc(100% - 48px); max-width:780px;
+      padding:22px 26px;
+      border-radius:20px;
+      display:flex; align-items:flex-start; gap:20px; flex-wrap:wrap;
+      opacity:0; pointer-events:none;
+      transition:opacity .4s cubic-bezier(.16,1,.3,1), transform .4s cubic-bezier(.16,1,.3,1);
+      /* glass */
+      background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,rgba(255,255,255,.02) 60%,rgba(0,198,255,.03) 100%);
+      backdrop-filter:blur(28px) saturate(1.8);
+      -webkit-backdrop-filter:blur(28px) saturate(1.8);
+      border:1px solid var(--borderg);
+      box-shadow:0 16px 48px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    #cookie-banner.visible {
+      opacity:1; pointer-events:all;
+      transform:translateX(-50%) translateY(0);
+    }
+    .cookie-icon {
+      width:38px; height:38px; flex-shrink:0; border-radius:10px;
+      background:var(--grad);
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 14px rgba(33,150,243,.3);
+      font-size:1.1rem;
+    }
+    .cookie-text { flex:1; min-width:220px; }
+    .cookie-text strong { font-family:var(--font-h); font-size:.95rem; display:block; margin-bottom:6px; }
+    .cookie-text p { color:var(--muted); font-size:.82rem; line-height:1.65; }
+    .cookie-text a { color:var(--a2); text-decoration:underline; }
+    .cookie-actions { display:flex; gap:10px; align-items:center; flex-shrink:0; }
+    #cookie-accept {
+      background:var(--grad); color:#fff;
+      padding:9px 22px; border-radius:100px; border:none; cursor:pointer;
+      font-family:var(--font-h); font-weight:700; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase;
+      transition:opacity .2s, transform .2s, box-shadow .2s;
+      box-shadow:0 4px 14px rgba(33,150,243,.3);
+    }
+    #cookie-accept:hover { opacity:.9; transform:translateY(-1px); box-shadow:0 8px 22px rgba(33,150,243,.45); }
+    #cookie-decline {
+      background:transparent; color:var(--muted);
+      padding:9px 18px; border-radius:100px;
+      border:1px solid var(--borderg);
+      cursor:pointer; font-size:.8rem; letter-spacing:.04em;
+      transition:color .2s, border-color .2s;
+      font-family:var(--font-b);
+    }
+    #cookie-decline:hover { color:var(--text); border-color:rgba(255,255,255,.25); }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ══ COOKIE BANNER ════════════════════════════════════════ -->
+<div id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <div class="cookie-icon">🍪</div>
+  <div class="cookie-text">
+    <strong>We use cookies</strong>
+    <p>
+      We use functional cookies to enable embedded YouTube videos.
+      By clicking <em>Accept</em>, YouTube may set cookies when you play a video.
+      If you decline, videos won't load. You can change this at any time via
+      <a href="{{ url_for('datenschutz') }}">Privacy Policy</a>.
+    </p>
+  </div>
+  <div class="cookie-actions">
+    <button id="cookie-accept">Accept</button>
+    <button id="cookie-decline">Decline</button>
+  </div>
+</div>
+
+<!-- ══ WELCOME SCREEN ══════════════════════════════════════ -->
+<div id="ws">
+  <img class="wlogo" src="{{ url_for('static', filename='images/logo_nobg.png') }}" alt="M Sound" />
+  <span class="wtitle">Welcome.</span>
+  <span class="wsub">M Sound Solutions</span>
+  <div class="wglass"></div>
+</div>
+
+<!-- ══ DYNAMIC ISLAND NAV ══════════════════════════════════ -->
+<div id="nav-outer">
+  <nav id="navbar">
+    <a href="{{ url_for('index') }}" class="nav-logo">
+      <img src="{{ url_for('static', filename='images/logo_nobg.png') }}" alt="M Sound" />
+      <span>M SOUND</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('index') }}" class="{{ 'active' if page=='home' }}">Home</a></li>
+      <li><a href="{{ url_for('shop') }}" class="{{ 'active' if page=='shop' }}">Shop</a></li>
+      <li><a href="{{ url_for('datenschutz') }}" class="{{ 'active' if page=='datenschutz' }}">Privacy</a></li>
+      <li><a href="{{ url_for('impressum') }}" class="{{ 'active' if page=='impressum' }}">Imprint</a></li>
+      <li><a href="mailto:info@m-sound.dev" class="nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+</div>
+
+<main>{% block content %}{% endblock %}</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="{{ url_for('static', filename='images/logo_nobg.png') }}" alt="M Sound" />
+      <p>Professional audio plugins for Roblox — realistic speaker systems and mixers for your stage.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="{{ url_for('index') }}">Home</a></li>
+        <li><a href="{{ url_for('shop') }}">Shop</a></li>
+        <li><a href="{{ url_for('datenschutz') }}">Privacy Policy</a></li>
+        <li><a href="{{ url_for('impressum') }}">Imprint</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li>
+          <a href="mailto:info@m-sound.dev">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            info@m-sound.dev
+          </a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/@M-SoundSolutions" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+            YouTube
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 M Sound Solutions. All rights reserved.</span>
+    <span>Designed for sound.</span>
+  </div>
+</footer>
+
+<script>
+/* ── Cookie consent helper ─────────────────────────── */
+var COOKIE_KEY = 'ms_cookies_v1';
+function getCookieConsent(){ return localStorage.getItem(COOKIE_KEY); }
+function setCookieConsent(val){ localStorage.setItem(COOKIE_KEY, val); }
+
+/* Global hook pages can listen to */
+window.MS_cookieAccepted = (getCookieConsent() === 'accepted');
+window.MS_cookieCallbacks = [];
+function onCookieAccepted(fn){ if(window.MS_cookieAccepted){ fn(); } else { window.MS_cookieCallbacks.push(fn); } }
+
+function fireCookieAccepted(){
+  window.MS_cookieAccepted = true;
+  window.MS_cookieCallbacks.forEach(function(fn){ fn(); });
+  window.MS_cookieCallbacks = [];
+}
+
+/* Show/hide banner */
+var cookieBanner = document.getElementById('cookie-banner');
+function showCookieBanner(){ cookieBanner.classList.add('visible'); }
+function hideCookieBanner(){ cookieBanner.classList.remove('visible'); setTimeout(function(){ cookieBanner.style.display='none'; }, 500); }
+
+document.getElementById('cookie-accept').addEventListener('click', function(){
+  setCookieConsent('accepted');
+  hideCookieBanner();
+  fireCookieAccepted();
+  document.dispatchEvent(new CustomEvent('cookieAccepted'));
+});
+document.getElementById('cookie-decline').addEventListener('click', function(){
+  setCookieConsent('declined');
+  hideCookieBanner();
+  document.dispatchEvent(new CustomEvent('cookieDeclined'));
+});
+
+/* Init */
+(function(){
+  var consent = getCookieConsent();
+  if(!consent){ showCookieBanner(); }
+  else if(consent === 'accepted'){ fireCookieAccepted(); }
+})();
+
+/* Welcome screen – only once per tab */
+(function(){
+  var ws = document.getElementById('ws');
+  if(sessionStorage.getItem('ms_w')) { ws.classList.add('gone'); return; }
+  setTimeout(function(){
+    ws.classList.add('glassing');
+    setTimeout(function(){
+      ws.classList.add('fading');
+      ws.addEventListener('animationend', function(){
+        ws.classList.add('gone');
+        sessionStorage.setItem('ms_w','1');
+      }, {once:true});
+    }, 500);
+  }, 1700);
+})();
+
+/* Dynamic Island */
+var no = document.getElementById('nav-outer');
+var nb = document.getElementById('navbar');
+function updateNav(){
+  var s = window.scrollY > 36;
+  no.classList.toggle('island', s);
+  nb.classList.toggle('island', s);
+}
+window.addEventListener('scroll', updateNav, {passive:true});
+updateNav();
+
+/* Scroll reveal */
+var reveals = document.querySelectorAll('.reveal');
+var rIO = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); rIO.unobserve(e.target); } });
+}, {threshold:0.1});
+reveals.forEach(function(el){ rIO.observe(el); });
+</script>
+
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>
